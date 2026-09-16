@@ -12,7 +12,6 @@ $$
 \begin{aligned}
 \max_{\text{bet}} \; \min_i \quad & \sum_j \text{bet}_{ij}\,\text{gain}_{ij} - \sum_i \sum_j \text{bet}_{ij} \\
 \text{s.t.} \quad & \sum_j \text{bet}_{ij}\,\text{gain}_{ij} - \text{gain}_{ij} - \sum_i \sum_j \text{bet}_{ij} \ge 0 \quad \forall i \\
-& \sum_j \text{bet}_{ij} = T \\
 & \sum_{i,j} \text{bet}_{ij} = T \\
 & \text{bet}_{ij} \ge 0 \quad \forall i, j
 \end{aligned}
@@ -66,3 +65,17 @@ $$
 & \text{bet}_i,\; s_i \ge 0 \quad \forall i, \qquad z \ge 0
 \end{aligned}
 $$
+
+## Note on the sign of $z$
+
+With $z \ge 0$ the LP is **infeasible** whenever no arbitrage exists (the best achievable
+$z^* = T(1/S - 1)$ is negative, see `modern/arb_lp_solved.md`).
+
+If instead one wants the maximum guaranteed outcome even when it is a loss (i.e. the least
+bad hedge), drop the bound and let $z$ be free. A simplex that requires nonnegative variables
+handles a free variable by the standard split
+$$
+z = z^+ - z^-, \qquad z^+,\; z^- \ge 0,
+$$
+replacing $z$ by $z^+ - z^-$ in the objective and every constraint. The LP is then always
+feasible, and $z^* < 0$ means no arbitrage.
